@@ -47,14 +47,14 @@ boggle_table_1 = [["h", "u", "d", "g"],
                   ["n", "c", "j", "a"],
                   ["g", "r", "s", "s"]]
 
-boggle_table = [["hudg"],
-                ["sidl"],
-                ["ncja"],
-                ["grss"]]
+boggle_table = ["hudg",
+                "sidl",
+                "ncja",
+                "grss"]
 
 
 def print_history(history):
-    print "".join([boggle_table[c][r] for c, r in history])
+    print "".join([boggle_table[r][c] for c, r in history])
 
 
 def next_letters((start_column, start_row), history):
@@ -71,14 +71,10 @@ def next_letters((start_column, start_row), history):
 
 
 def check_valid_letter((column, row), history):
-    print column, row
+    print column, row, boggle_table[row][column]
     print_history(history)
-    cn, rn = 0, 0
+
     cl = history((cn, rn), (column, row))
-
-
-def pos(his):
-    pass
 
 
 print check_valid_letter((2, 3), [])
