@@ -82,13 +82,12 @@ def check_valid_letter((column, row), history):
 def walk_tree(cell, history, words):
     to_check = next_letters(cell, history)
     current_letter = boggle_table[cell[1]][cell[0]]
-    for letter in to_check:
-        possible_next_letters = root.options(history_string(history))
-        if current_letter in possible_next_letters:
-            for word in walk_tree(letter, history + [cell, ], words):
-                words.append(word)
-        if "\n" in possible_next_letters and history_string(history) not in words:
-            words.append(history_string(history))
+    possible_next_letters = root.options(history_string(history))
+    if current_letter in possible_next_letters:
+        for letter in to_check:
+            walk_tree(letter, history + [cell, ], words)
+    if "\n" in possible_next_letters:
+        words.append(history_string(history))
     return words
 
 
