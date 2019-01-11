@@ -18,11 +18,13 @@ class Letter:
     def __str__(self):
         return str(self.conn.keys())
 
-    def options(self, his):
-        if len(his) > 1:
-            return self.conn[his[0]].options(his[1:])
+    def options(self, history_string):
+        if len(history_string) > 1:
+            return self.conn[history_string[0]].options(history_string[1:])
+        elif len(history_string) == 1:
+            return "".join(self.conn[history_string[0]].conn.keys())
         else:
-            return self.conn[his[0]].conn.keys()
+            return "".join(self.conn.keys())
 
 
 f = open("words_alpha.txt")
@@ -34,11 +36,11 @@ for word in f.readlines():
     print word,
     root.connect_recursive(word)
     i += 1
-    if i > 1000:
+    if i > 100000:
         break
 
-root.connect_recursive("as")
-root.connect_recursive("ass")
+root.connect_recursive("as\n")
+root.connect_recursive("ass\n")
 print root.options("a")
 print root.options("as")
 
@@ -53,8 +55,8 @@ boggle_table = ["hudg",
                 "grss"]
 
 
-def print_history(history):
-    print "".join([boggle_table[r][c] for c, r in history])
+def history_string(history):
+    return "".join([boggle_table[r][c] for c, r in history])
 
 
 def next_letters((start_column, start_row), history):
@@ -71,10 +73,22 @@ def next_letters((start_column, start_row), history):
 
 
 def check_valid_letter((column, row), history):
-    print column, row, boggle_table[row][column]
-    print_history(history)
+    #print column, row, boggle_table[row][column]
+    #print history_string(history)
+    #print root.options(history_string(history))
+    a = boggle_table[row][column]
+    b = root.options(history_string(history))
+    return a in b
 
-    cl = history((cn, rn), (column, row))
+
+def walk_tree(word):
+    if len(word):
+        word[0] = 1
 
 
-print check_valid_letter((2, 3), [])
+print check_valid_letter((3, 2), [])
+
+for rowt in range(4):
+    for columnt in range(4):
+        print check_valid_letter((columnt, rowt), [])*1,
+    print
