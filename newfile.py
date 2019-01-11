@@ -36,7 +36,7 @@ for word in f.readlines():
     print word,
     root.connect_recursive(word)
     i += 1
-    if i > 100000:
+    if i > 1000:
         break
 
 root.connect_recursive("as\n")
@@ -73,22 +73,20 @@ def next_letters((start_column, start_row), history):
 
 
 def check_valid_letter((column, row), history):
-    #print column, row, boggle_table[row][column]
-    #print history_string(history)
-    #print root.options(history_string(history))
-    a = boggle_table[row][column]
-    b = root.options(history_string(history))
-    return a in b
+    # print column, row, boggle_table[row][column]
+    # print history_string(history)
+    # print root.options(history_string(history))
+    return boggle_table[row][column] in root.options(history_string(history))
 
 
-def walk_tree(word):
-    if len(word):
-        word[0] = 1
+def walk_tree((column, row), history, words):
+
+    return words
 
 
-print check_valid_letter((3, 2), [])
+print walk_tree((3, 2), [], [])
 
 for rowt in range(4):
     for columnt in range(4):
-        print check_valid_letter((columnt, rowt), [])*1,
+        print check_valid_letter((columnt, rowt), []) * 1,
     print
