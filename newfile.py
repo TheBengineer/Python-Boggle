@@ -53,30 +53,32 @@ boggle_table = [["hudg"],
                 ["grss"]]
 
 
-def word(his):
-    return "".join([boggle_table[c][r] for c, r in his])
+def print_history(history):
+    print "".join([boggle_table[c][r] for c, r in history])
 
 
-def close((r, c), (rp, cp)):
-    a = []
-    r0 = range(max(0, r - 1), min(4, r + 2))
-    c0 = range(max(0, c - 1), min(4, c + 2))
-    for rt in r0:
-        for ct in c0:
-            if not (rt == r and ct == c) and not (rt == rp and ct == cp):
-                a.append((rt, ct))
-    return a
+def next_letters((start_column, start_row), history):
+    candidates = []
+    rows = range(max(0, start_row - 1), min(4, start_row + 2))
+    columns = range(max(0, start_column - 1), min(4, start_column + 2))
+    for row in rows:
+        for column in columns:
+            if not (row == start_row and column == start_column):
+                if not (row, column) in history:
+                    candidates.append((row, column))
+
+    return candidates
 
 
-def check((c, r), his):
-    print c, r
-    print word(his)
+def check_valid_letter((column, row), history):
+    print column, row
+    print_history(history)
     cn, rn = 0, 0
-    cl = close((cn, rn), (c, r))
+    cl = history((cn, rn), (column, row))
 
 
 def pos(his):
     pass
 
 
-print check((2, 3), [])
+print check_valid_letter((2, 3), [])
