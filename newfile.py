@@ -33,14 +33,18 @@ root = Letter("")
 
 i = 0
 for word in f.readlines():
-    print word,
     root.connect_recursive(word)
     i += 1
-    if i > 1000:
+    if i % 10000 == 0:
+        print word,
+    if i > 1000000:
         break
 
-root.connect_recursive("as\n")
-root.connect_recursive("ass\n")
+# root.connect_recursive("as\n")
+# root.connect_recursive("ass\n")
+# root.connect_recursive("b\n")
+# root.connect_recursive("c\n")
+# root.connect_recursive("d\n")
 print root.options("a")
 print root.options("as")
 
@@ -79,21 +83,27 @@ def check_valid_letter((column, row), history):
     return boggle_table[row][column] in root.options(history_string(history))
 
 
-def walk_tree(cell, history, words):
-    to_check = next_letters(cell, history)
-    current_letter = boggle_table[cell[1]][cell[0]]
+def walk_tree(to_check, history, words):
+    # to_check = next_letters(cell, history)
     possible_next_letters = root.options(history_string(history))
-    if current_letter in possible_next_letters:
-        for letter in to_check:
-            walk_tree(letter, history + [cell, ], words)
+    for letter in to_check:
+        if boggle_table[letter[1]][letter[0]] in possible_next_letters:
+            walk_tree(next_letters(letter, history + [letter, ]), history + [letter, ], words)
     if "\n" in possible_next_letters:
-        words.append(history_string(history))
+        words.append((history_string(history), history))
     return words
 
 
-print walk_tree((3, 2), [], [])
+found_words = []
 
 for rowt in range(4):
     for columnt in range(4):
         print check_valid_letter((columnt, rowt), []) * 1,
     print
+
+for rowt in range(4):
+    for columnt in range(4):
+        walk_tree(((columnt, rowt),), [], found_words)
+    print
+
+print found_words
